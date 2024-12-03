@@ -1,8 +1,5 @@
 package TestUsers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import entities.users.FriendProfile;
 import entities.users.UserProfile;
 import org.json.JSONArray;
@@ -10,8 +7,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import useCase.FriendsList.FriendsListUseCase;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,21 +25,27 @@ public class TestFriendsListUseCase {
         friendProfile1 = helper.createFriendProfile("testUser2");
         friendProfile2 = helper.createFriendProfile("testUser3");
 
-        JSONArray friends = new JSONArray();
-        friends.put(friendProfile1);
-        friends.put(friendProfile2);
+        List<FriendProfile> friendProfiles = Arrays.asList(friendProfile1, friendProfile2);
+
+        JSONArray friends = helper.createUserFriendsList(friendProfiles);
         userProfile = helper.createUserProfile("testUser1", friends);
+
+        friendsListUseCase = new FriendsListUseCase(userProfile, friendProfiles);
     }
 
     @Test
     public void getFriendsListNames() {
+        List<String> friendsListNames = Arrays.asList("two", "three");
+        assertEquals(friendsListUseCase.getFriendsListNames(), friendsListNames);
     }
 
     @Test
     public void getUserProfile() {
+        assertEquals(friendsListUseCase.getUserProfile(), userProfile);
     }
 
     @Test
     public void getFriendProfileList() {
+        assertEquals(friendsListUseCase.getFriendProfileList(), Arrays.asList(friendProfile1, friendProfile2));
     }
 }

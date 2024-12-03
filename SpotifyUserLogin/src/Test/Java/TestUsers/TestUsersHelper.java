@@ -6,9 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import entities.users.FriendProfile;
 import entities.users.UserProfile;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class TestUsersHelper {
     public static String userHome = System.getProperty("user.home");
@@ -39,6 +41,15 @@ public class TestUsersHelper {
                 mapper.readValue(userData.get("genres").traverse(), new TypeReference<>() {}),
                 mapper.readValue(userData.get("artists").traverse(), new TypeReference<>() {})
         );
+    }
+
+    public JSONArray createUserFriendsList(List<FriendProfile> friendProfiles) {
+        JSONArray friends = new JSONArray();
+        for (FriendProfile friendProfile : friendProfiles) {
+            JSONObject friend = new JSONObject().put("id", friendProfile.getUserId()).put("displayName", friendProfile.getUsername());
+            friends.put(friend);
+        }
+        return friends;
     }
 
     public UserProfile createUserProfile(String user, JSONArray friendsList) throws IOException {

@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 public class FriendProfile extends AbstractUserProfile{
-    public FriendProfile(String userId, List<String> genres, List<String> artists) {
-        super(userId, genres, artists);
-    }
-
     public FriendProfile(SpotifyInteractor interactor, String id) {
         super(interactor, id);
+    }
+
+    public FriendProfile(String username, String userId, List<String> genres, List<String> artists) {
+        super(username, userId, genres, artists);
     }
 
     @Override

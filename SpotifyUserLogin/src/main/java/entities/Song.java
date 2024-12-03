@@ -34,4 +34,12 @@ public class Song {
     public List<Rating> getRatings() {
         return new ArrayList<>(ratings);
     }
+
+    public int getRatingForUser(String user123) {
+        return 0;
+    }
+
+    public String getCommentForUser(String user123) {
+        return null;
+    }
 }

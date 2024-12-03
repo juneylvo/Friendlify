@@ -1,0 +1,20 @@
+{
+  "testUser1": {
+    "username": "one",
+    "userId": "111",
+    "genres": ["Genre 11", "Genre 12", "Genre 13"],
+    "artists": ["Artist 11", "Artist 12", "Artist 13"]
+  },
+  "testUser2": {
+    "username": "two",
+    "userId": "222",
+    "genres": ["Genre 21", "Genre 22", "Genre 23"],
+    "artists": ["Artist 21", "Artist 22", "Artist 23"]
+  },
+  "testUser3": {
+    "username": "three",
+    "userId": "333",
+    "genres": ["Genre 31", "Genre 32", "Genre 33"],
+    "artists": ["Artist 31", "Artist 32", "Artist 33"]
+  }
+}

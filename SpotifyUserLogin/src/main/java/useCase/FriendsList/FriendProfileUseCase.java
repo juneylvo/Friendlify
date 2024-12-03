@@ -7,16 +7,7 @@ import java.util.List;
 /**
  * Use case interactor for the friend profile.
  */
-public class FriendProfileUseCase {
-    private final FriendProfile friendProfile;
-
-    public FriendProfileUseCase(FriendProfile friendProfile) {
-        this.friendProfile = friendProfile;
-    }
-
-    public FriendProfile getFriendProfile() {
-        return friendProfile;
-    }
+public record FriendProfileUseCase(FriendProfile friendProfile) {
 
     public List<String> getPreferredGenres() {
         return friendProfile.getPreferredGenres();

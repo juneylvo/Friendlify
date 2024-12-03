@@ -36,6 +36,21 @@ public abstract class AbstractUserProfile {
     }
 
     /**
+     * Slightly more complex constructor for more in-depth mocking and testing.
+     * @param username the display name.
+     * @param userId the user's ID.
+     * @param genres the user's list of preferred genres.
+     * @param artists the user's list of preferred artists.
+     */
+    public AbstractUserProfile(String username, String userId, List<String> genres, List<String> artists) {
+        this.interactor = new SpotifyInteractor();
+        this.username = username;
+        this.userID = userId;
+        this.preferredGenres = genres;
+        this.preferredArtists = artists;
+    }
+
+    /**
      * Pulls user data from the Spotify API to initialize their profile.
      * @param interactor the SpotifyInteractor associated with this session.
      */

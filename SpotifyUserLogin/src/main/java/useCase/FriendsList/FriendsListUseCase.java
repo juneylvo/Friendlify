@@ -14,12 +14,27 @@ public class FriendsListUseCase {
     private final UserProfile userProfile;
     private final List<FriendProfile> friendProfileList = new ArrayList<>();
 
+    /**
+     * Intended use constructor, which connects to the Spotify API.
+     * @param interactor the Spotify Interactor for this session.
+     * @param userProfile the current user.
+     */
     public FriendsListUseCase(SpotifyInteractor interactor, UserProfile userProfile) {
         this.userProfile = userProfile;
 
         for (String friendId : userProfile.getFriendsListIds()) {
             friendProfileList.add(new FriendProfile(interactor, friendId));
         }
+    }
+
+    /**
+     * Simpler constructor for easier testing.
+     * @param userProfile a sample user.
+     * @param friendProfileList a sample friends list.
+     */
+    public FriendsListUseCase(UserProfile userProfile, List<FriendProfile> friendProfileList) {
+        this.userProfile = userProfile;
+        this.friendProfileList.addAll(friendProfileList);
     }
 
     public List<String> getFriendsListNames() {

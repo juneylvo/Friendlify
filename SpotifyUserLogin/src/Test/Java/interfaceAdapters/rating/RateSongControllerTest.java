@@ -57,7 +57,7 @@ public class RateSongControllerTest {
         Song song = new Song("1", "Test Song", Collections.singletonList("Test Artist"));
         songRepository.put("1", song);
 
-        // Act & Assert
+        // Act & Assert done
         assertThrows(IllegalArgumentException.class, () -> RateSongController.rateSong("1", "user123", 6, "Too good!"));
     }
 

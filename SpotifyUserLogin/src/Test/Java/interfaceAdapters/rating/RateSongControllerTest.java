@@ -41,7 +41,7 @@ public class RateSongControllerTest {
 
     @Test
     public void testRateSong_InvalidSongId() {
-        // Arrange
+        // Arrange clearly
         String invalidSongId = "999";
 
         // Act

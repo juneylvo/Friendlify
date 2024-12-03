@@ -1,25 +1,16 @@
 package TestUsers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import entities.users.FriendProfile;
 import org.junit.Before;
 import org.junit.Test;
 import useCase.FriendsList.FriendProfileUseCase;
 
-import java.io.File;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-public class FriendProfileUseCaseTest {
-    public static String userHome = System.getProperty("user.home");
-    public static String workingDirectory = "%s/IdeaProjects/Group-72/SpotifyUserLogin".formatted(userHome);
-    public static String resourcesDirectory = "%s/src/test/resources/sampleUsers.json".formatted(workingDirectory);
-
-    public static FriendProfile friendProfile;
-
+public class TestFriendProfileUseCase {
+    private static FriendProfile friendProfile;
     private static FriendProfileUseCase friendProfileUseCase;
 
     @Before

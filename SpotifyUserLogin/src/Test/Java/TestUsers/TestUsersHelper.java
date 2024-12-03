@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entities.users.FriendProfile;
+import entities.users.UserProfile;
+import org.json.JSONArray;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +38,18 @@ public class TestUsersHelper {
                 userData.get("userId").asText(),
                 mapper.readValue(userData.get("genres").traverse(), new TypeReference<>() {}),
                 mapper.readValue(userData.get("artists").traverse(), new TypeReference<>() {})
+        );
+    }
+
+    public UserProfile createUserProfile(String user, JSONArray friendsList) throws IOException {
+        JsonNode userData = jsonNode.get(user);
+
+        return new UserProfile(
+                userData.get("username").asText(),
+                userData.get("userId").asText(),
+                mapper.readValue(userData.get("genres").traverse(), new TypeReference<>() {}),
+                mapper.readValue(userData.get("artists").traverse(), new TypeReference<>() {}),
+                friendsList
         );
     }
 }

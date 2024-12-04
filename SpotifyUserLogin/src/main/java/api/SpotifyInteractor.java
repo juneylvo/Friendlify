@@ -76,7 +76,7 @@ public class SpotifyInteractor extends AbstractSpotifyInteractor {
         // Build the request
         final AuthorizationCodeUriRequest authorizationCodeUriRequest = this.api.authorizationCodeUri()
                 .scope(APPLICATION_SCOPE)
-                .show_dialog(true)
+                .show_dialog(false)
                 .build();
         // Make the request
         final URI uri = authorizationCodeUriRequest.execute();

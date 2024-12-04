@@ -7,13 +7,13 @@ import java.util.List;
 public class EditPreferencesResponseTest extends TestCase {
 
     public void testIsSuccess() {
-        // Test for success being true
+        // Test when success is true
         EditPreferencesResponse successResponse = new EditPreferencesResponse(
-                true, "Operation succeeded", List.of("rock", "jazz"), List.of("Artist A", "Artist B")
+                true, null, List.of("rock", "pop"), List.of("Artist A")
         );
         assertTrue(successResponse.isSuccess());
 
-        // Test for success being false
+        // Test when success is false
         EditPreferencesResponse failureResponse = new EditPreferencesResponse(
                 false, "Operation failed", null, null
         );
@@ -21,72 +21,78 @@ public class EditPreferencesResponseTest extends TestCase {
     }
 
     public void testGetMessage() {
-        // Test for a valid message
-        EditPreferencesResponse responseWithMessage = new EditPreferencesResponse(
-                true, "Preferences updated successfully.", null, null
+        // Test default success message
+        EditPreferencesResponse successResponse = new EditPreferencesResponse(
+                true, null, List.of("rock"), List.of("Artist A")
         );
-        assertEquals("Preferences updated successfully.", responseWithMessage.getMessage());
+        assertEquals("Preferences updated successfully.", successResponse.getMessage());
 
-        // Test for a null message
-        EditPreferencesResponse responseWithNullMessage = new EditPreferencesResponse(
-                true, null, null, null
+        // Test custom error message
+        EditPreferencesResponse failureResponse = new EditPreferencesResponse(
+                false, "Custom error message", null, null
         );
-        assertNull(responseWithNullMessage.getMessage());
+        assertEquals("Custom error message", failureResponse.getMessage());
+
+        // Test null error message
+        EditPreferencesResponse nullMessageResponse = new EditPreferencesResponse(
+                false, null, null, null
+        );
+        assertNull(nullMessageResponse.getMessage());
     }
 
     public void testGetUpdatedGenres() {
-        // Test when genres are provided
+        // Test when updated genres are provided
         EditPreferencesResponse responseWithGenres = new EditPreferencesResponse(
-                true, "Genres updated", List.of("rock", "pop"), null
+                true, null, List.of("rock", "pop"), null
         );
         assertEquals(List.of("rock", "pop"), responseWithGenres.getUpdatedGenres());
 
-        // Test when genres are null
+        // Test when updated genres are null
         EditPreferencesResponse responseWithoutGenres = new EditPreferencesResponse(
-                true, "No genres available", null, null
+                true, null, null, null
         );
         assertNull(responseWithoutGenres.getUpdatedGenres());
 
-        // Test when genres are an empty list
+        // Test when updated genres are empty
         EditPreferencesResponse responseWithEmptyGenres = new EditPreferencesResponse(
-                true, "Empty genres", List.of(), null
+                true, null, List.of(), null
         );
         assertTrue(responseWithEmptyGenres.getUpdatedGenres().isEmpty());
     }
 
     public void testGetUpdatedArtists() {
-        // Test when artists are provided
+        // Test when updated artists are provided
         EditPreferencesResponse responseWithArtists = new EditPreferencesResponse(
-                true, "Artists updated", null, List.of("Artist A", "Artist B")
+                true, null, null, List.of("Artist A", "Artist B")
         );
         assertEquals(List.of("Artist A", "Artist B"), responseWithArtists.getUpdatedArtists());
 
-        // Test when artists are null
+        // Test when updated artists are null
         EditPreferencesResponse responseWithoutArtists = new EditPreferencesResponse(
-                true, "No artists available", null, null
+                true, null, null, null
         );
         assertNull(responseWithoutArtists.getUpdatedArtists());
 
-        // Test when artists are an empty list
+        // Test when updated artists are empty
         EditPreferencesResponse responseWithEmptyArtists = new EditPreferencesResponse(
-                true, "Empty artists", null, List.of()
+                true, null, null, List.of()
         );
         assertTrue(responseWithEmptyArtists.getUpdatedArtists().isEmpty());
     }
 
     public void testAllFields() {
-        // Test with all fields populated
+        // Test when all fields are populated
         EditPreferencesResponse completeResponse = new EditPreferencesResponse(
-                true, "All fields set", List.of("pop", "rock"), List.of("Artist X", "Artist Y")
+                true, null, List.of("rock", "pop"), List.of("Artist A", "Artist B")
         );
         assertTrue(completeResponse.isSuccess());
-        assertEquals("All fields set", completeResponse.getMessage());
-        assertEquals(List.of("pop", "rock"), completeResponse.getUpdatedGenres());
-        assertEquals(List.of("Artist X", "Artist Y"), completeResponse.getUpdatedArtists());
+        assertEquals("Preferences updated successfully.", completeResponse.getMessage());
+        assertEquals(List.of("rock", "pop"), completeResponse.getUpdatedGenres());
+        assertEquals(List.of("Artist A", "Artist B"), completeResponse.getUpdatedArtists());
     }
 
     public void testEmptyFields() {
-        // Test for empty genres and artists
+        // Test when genres and artists are both empty
         EditPreferencesResponse emptyResponse = new EditPreferencesResponse(
                 false, "Empty fields", List.of(), List.of()
         );
@@ -94,5 +100,16 @@ public class EditPreferencesResponseTest extends TestCase {
         assertEquals("Empty fields", emptyResponse.getMessage());
         assertTrue(emptyResponse.getUpdatedGenres().isEmpty());
         assertTrue(emptyResponse.getUpdatedArtists().isEmpty());
+    }
+
+    public void testNullFields() {
+        // Test when genres and artists are null
+        EditPreferencesResponse nullResponse = new EditPreferencesResponse(
+                false, "Null fields", null, null
+        );
+        assertFalse(nullResponse.isSuccess());
+        assertEquals("Null fields", nullResponse.getMessage());
+        assertNull(nullResponse.getUpdatedGenres());
+        assertNull(nullResponse.getUpdatedArtists());
     }
 }

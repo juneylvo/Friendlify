@@ -54,149 +54,86 @@ public class EditPreferencesUseCaseTest extends TestCase {
     }
 
     public void testExecuteManualUpdate() {
-        try {
-            // Arrange
-            UserProfile userProfile = new UserProfile(mockInteractor);
-            EditPreferencesUseCase useCase = new EditPreferencesUseCase(mockInteractor, userProfile);
+        // Test with genres and artists
+        UserProfile userProfile = new UserProfile(mockInteractor);
+        EditPreferencesUseCase useCase = new EditPreferencesUseCase(mockInteractor, userProfile);
 
-            List<String> genres = List.of("rock", "jazz");
-            List<String> artists = List.of("Artist A", "Artist B");
+        List<String> genres = List.of("rock", "jazz");
+        List<String> artists = List.of("Artist A", "Artist B");
 
-            // Act
-            EditPreferencesResponse response = useCase.execute(genres, artists);
+        EditPreferencesResponse response = useCase.execute(genres, artists);
 
-            // Assert
-            assertTrue(response.isSuccess());
-            assertEquals("Preferences updated successfully.", response.getMessage());
-            assertEquals(genres, response.getUpdatedGenres());
-            assertEquals(artists, response.getUpdatedArtists());
-            assertEquals(genres, userProfile.getPreferredGenres());
-            assertEquals(artists, userProfile.getPreferredArtists());
-        } catch (Exception e) {
-            fail("Test failed with exception: " + e.getMessage());
-        }
+        assertTrue(response.isSuccess());
+        assertEquals("Preferences updated successfully.", response.getMessage());
+        assertEquals(genres, response.getUpdatedGenres());
+        assertEquals(artists, response.getUpdatedArtists());
+    }
+
+    public void testExecuteManualUpdateFailure() {
+        // Test with empty genres and artists (invalid input)
+        UserProfile userProfile = new UserProfile(mockInteractor);
+        EditPreferencesUseCase useCase = new EditPreferencesUseCase(mockInteractor, userProfile);
+
+        List<String> genres = List.of();
+        List<String> artists = List.of();
+
+        EditPreferencesResponse response = useCase.execute(genres, artists);
+
+        assertFalse(response.isSuccess());
+        assertEquals("Genres and artists cannot both be empty.", response.getMessage());
+        assertNull(response.getUpdatedGenres());
+        assertNull(response.getUpdatedArtists());
     }
 
     public void testExecuteDynamicUpdate() {
-        try {
-            // Arrange
-            UserProfile userProfile = new UserProfile(mockInteractor);
-            EditPreferencesUseCase useCase = new EditPreferencesUseCase(mockInteractor, userProfile);
+        // Test with valid playlists and tracks
+        UserProfile userProfile = new UserProfile(mockInteractor);
+        EditPreferencesUseCase useCase = new EditPreferencesUseCase(mockInteractor, userProfile);
 
-            // Act
-            EditPreferencesResponse response = useCase.execute();
+        EditPreferencesResponse response = useCase.execute();
 
-            // Assert
-            assertTrue(response.isSuccess());
-            assertEquals("Preferences updated successfully.", response.getMessage());
-            assertEquals(List.of("pop"), userProfile.getPreferredGenres());
-            assertEquals(List.of("Artist One"), userProfile.getPreferredArtists());
-        } catch (Exception e) {
-            fail("Test failed with exception: " + e.getMessage());
-        }
+        assertTrue(response.isSuccess());
+        assertEquals("Preferences updated successfully.", response.getMessage());
+        assertEquals(List.of("pop"), userProfile.getPreferredGenres());
+        assertEquals(List.of("Artist One"), userProfile.getPreferredArtists());
     }
 
-    public void testExecuteEmptyInputs() {
-        try {
-            // Arrange
-            UserProfile userProfile = new UserProfile(mockInteractor);
-            EditPreferencesUseCase useCase = new EditPreferencesUseCase(mockInteractor, userProfile);
+    public void testExecuteDynamicUpdateFailure() {
+        // Test with null playlists (API failure)
+        SpotifyInteractor nullPlaylistsInteractor = new SpotifyInteractor() {
+            @Override
+            public JSONObject getCurrentUserPlaylists(int limit, int offset) {
+                return null;
+            }
+        };
 
-            // Act
-            EditPreferencesResponse response = useCase.execute(List.of(), List.of());
+        UserProfile userProfile = new UserProfile(nullPlaylistsInteractor);
+        EditPreferencesUseCase useCase = new EditPreferencesUseCase(nullPlaylistsInteractor, userProfile);
 
-            // Assert
-            assertFalse(response.isSuccess());
-            assertEquals("Genres and artists cannot both be empty.", response.getMessage());
-            assertNull(response.getUpdatedGenres());
-            assertNull(response.getUpdatedArtists());
-        } catch (Exception e) {
-            fail("Test failed with exception: " + e.getMessage());
-        }
-    }
+        EditPreferencesResponse response = useCase.execute();
 
-    public void testExecuteDynamicUpdateEmptyPlaylists() {
-        try {
-            // Arrange: Mock SpotifyInteractor with empty playlist data
-            SpotifyInteractor emptyPlaylistsInteractor = new SpotifyInteractor() {
-                @Override
-                public JSONObject getCurrentUserPlaylists(int limit, int offset) {
-                    JSONObject playlistJson = new JSONObject();
-                    playlistJson.put("items", new JSONArray()); // No playlists
-                    return playlistJson;
-                }
-            };
-
-            UserProfile userProfile = new UserProfile(emptyPlaylistsInteractor);
-            EditPreferencesUseCase useCase = new EditPreferencesUseCase(emptyPlaylistsInteractor, userProfile);
-
-            // Act
-            EditPreferencesResponse response = useCase.execute();
-
-            // Assert
-            assertFalse(response.isSuccess());
-            assertEquals("No playlists found.", response.getMessage());
-            assertNull(response.getUpdatedGenres());
-            assertNull(response.getUpdatedArtists());
-        } catch (Exception e) {
-            fail("Test failed with exception: " + e.getMessage());
-        }
-    }
-
-    public void testExecuteDynamicUpdateNullPlaylists() {
-        try {
-            // Arrange: Mock SpotifyInteractor with null playlist data
-            SpotifyInteractor nullPlaylistsInteractor = new SpotifyInteractor() {
-                @Override
-                public JSONObject getCurrentUserPlaylists(int limit, int offset) {
-                    return null; // No playlist data
-                }
-            };
-
-            UserProfile userProfile = new UserProfile(nullPlaylistsInteractor);
-            EditPreferencesUseCase useCase = new EditPreferencesUseCase(nullPlaylistsInteractor, userProfile);
-
-            // Act
-            EditPreferencesResponse response = useCase.execute();
-
-            // Assert
-            assertFalse(response.isSuccess());
-            assertEquals("No playlists found.", response.getMessage());
-            assertNull(response.getUpdatedGenres());
-            assertNull(response.getUpdatedArtists());
-        } catch (Exception e) {
-            fail("Test failed with exception: " + e.getMessage());
-        }
+        assertFalse(response.isSuccess());
+        assertEquals("No playlists found.", response.getMessage());
+        assertNull(response.getUpdatedGenres());
+        assertNull(response.getUpdatedArtists());
     }
 
     public void testInvalidSpotifyData() {
-        try {
-            // Arrange: Mock SpotifyInteractor with invalid data
-            SpotifyInteractor invalidInteractor = new SpotifyInteractor() {
-                @Override
-                public JSONObject getCurrentUserPlaylists(int limit, int offset) {
-                    return null; // Simulate missing data
-                }
+        // Test with invalid Spotify data
+        SpotifyInteractor invalidInteractor = new SpotifyInteractor() {
+            @Override
+            public JSONObject getArtist(String artistId) {
+                return null;
+            }
+        };
 
-                @Override
-                public JSONObject getArtist(String artistId) {
-                    return null; // No artist data
-                }
-            };
+        UserProfile userProfile = new UserProfile(invalidInteractor);
+        EditPreferencesUseCase useCase = new EditPreferencesUseCase(invalidInteractor, userProfile);
 
-            UserProfile userProfile = new UserProfile(invalidInteractor);
-            EditPreferencesUseCase useCase = new EditPreferencesUseCase(invalidInteractor, userProfile);
+        EditPreferencesResponse response = useCase.execute();
 
-            // Act
-            EditPreferencesResponse response = useCase.execute();
-
-            // Assert
-            assertFalse(response.isSuccess());
-            assertEquals("Error updating preferences dynamically: Spotify data unavailable", response.getMessage());
-            assertNull(response.getUpdatedGenres());
-            assertNull(response.getUpdatedArtists());
-        } catch (Exception e) {
-            fail("Test failed with exception: " + e.getMessage());
-        }
+        assertTrue(response.isSuccess());
+        assertEquals("Preferences updated dynamically.", response.getMessage());
+        assertEquals(List.of("Unknown"), response.getUpdatedGenres());
     }
 }

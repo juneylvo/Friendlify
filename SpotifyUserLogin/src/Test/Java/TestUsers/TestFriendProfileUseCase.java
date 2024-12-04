@@ -2,6 +2,7 @@ package TestUsers;
 
 import entities.users.FriendProfile;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import useCase.FriendsList.FriendProfileUseCase;
 
@@ -13,8 +14,8 @@ public class TestFriendProfileUseCase {
     private static FriendProfile friendProfile;
     private static FriendProfileUseCase friendProfileUseCase;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         TestUsersHelper helper = new TestUsersHelper();
         friendProfile = helper.createFriendProfile("testUser1");
         friendProfileUseCase = new FriendProfileUseCase(friendProfile);

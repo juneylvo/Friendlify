@@ -20,6 +20,11 @@ public class UserProfile extends AbstractUserProfile{
         super(userId, genres, artists);
     }
 
+    public UserProfile(String username, String userId, List<String> genres, List<String> artists, JSONArray friendsList) {
+        super(username, userId, genres, artists);
+        this.friendsList.putAll(friendsList);
+    }
+
     /**
      * Initializes the friends list with a workaround method.
      * <p>

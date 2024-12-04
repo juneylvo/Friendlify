@@ -1,16 +1,15 @@
 package api;
 
-import java.io.IOException;
-import java.net.URI;
-
 import org.apache.hc.core5.http.ParseException;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
-
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.requests.data.AbstractDataRequest;
+
+import java.io.IOException;
+import java.net.URI;
 
 /**
  * A class to dictate and document the methods required for the SpotifyInteractor.

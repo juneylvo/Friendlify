@@ -12,7 +12,7 @@ public class RateSongPresenterTest {
 
     @Test
     public void testPrepareSuccessMessage() {
-        // Act
+        // Act checked
         String message = presenter.prepareSuccessMessage("Test Song");
 
         // Assert

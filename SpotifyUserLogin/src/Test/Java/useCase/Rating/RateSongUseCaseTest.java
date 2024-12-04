@@ -12,7 +12,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests for the RateSongUseCase class.
+ * Unit tests for the RateSongUseCase class to test.
  */
 public class RateSongUseCaseTest {
 
